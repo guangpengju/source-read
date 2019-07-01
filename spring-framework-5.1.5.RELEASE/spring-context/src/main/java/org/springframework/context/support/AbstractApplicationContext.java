@@ -519,19 +519,23 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
-			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
+			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();//GM:获取/刷新beanFactory、加载bean定义
 
 			// Prepare the bean factory for use in this context.
+			// GM:在beanFactory使用之前,进行处理
 			prepareBeanFactory(beanFactory);
 
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
+				// GM: 上下文子类中的beanfactory进行后期处理(大概是干这个的),空方法
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
+				// GM: 不清楚干了什么
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
+				// GM:不清楚干了什么
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
@@ -634,8 +638,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see #getBeanFactory()
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
-		refreshBeanFactory();
-		return getBeanFactory();
+		refreshBeanFactory();//GM:刷新beanFactory
+		return getBeanFactory();//GM:获取刷新后的beanFactory
 	}
 
 	/**
