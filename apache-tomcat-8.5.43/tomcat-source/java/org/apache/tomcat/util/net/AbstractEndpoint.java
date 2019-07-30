@@ -1115,9 +1115,11 @@ public abstract class AbstractEndpoint<S> {
 
     public void init() throws Exception {
         if (bindOnInit) {
+            // G:地址绑定
             bind();
             bindState = BindState.BOUND_ON_INIT;
         }
+        // G:JMX注册? TODO
         if (this.domain != null) {
             // Register endpoint (as ThreadPool - historical name)
             oname = new ObjectName(domain + ":type=ThreadPool,name=\"" + getName() + "\"");

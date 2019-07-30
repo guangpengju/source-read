@@ -536,13 +536,15 @@ public class Catalina {
         loaded = true;
 
         long t1 = System.nanoTime();
-
+        // G: 校验缓存目录是否存在
         initDirs();
 
         // Before digester - it may be needed
+        // G:不明白,貌似是设置命名空间相关的参数 TODO
         initNaming();
 
         // Create and execute our Digester
+        // G:构建xml解析器digester,设置解析规则
         Digester digester = createStartDigester();
 
         InputSource inputSource = null;
@@ -632,10 +634,12 @@ public class Catalina {
         getServer().setCatalinaBase(Bootstrap.getCatalinaBaseFile());
 
         // Stream redirection
+        // G:初始化输出形式
         initStreams();
 
         // Start the new server
         try {
+            // G:初始化server
             getServer().init();
         } catch (LifecycleException e) {
             if (Boolean.getBoolean("org.apache.catalina.startup.EXIT_ON_INIT_FAILURE")) {

@@ -63,12 +63,15 @@ public final class Bootstrap {
 
     static {
         // Will always be non-null
+        // G:java命令执行目录
         String userDir = System.getProperty("user.dir");
 
         // Home first
+        // G:获取catalina_home目录(安装目录)
         String home = System.getProperty(Globals.CATALINA_HOME_PROP);
         File homeFile = null;
 
+        // G:获取user.dir 与 catalina.home 参数拼接的路径
         if (home != null) {
             File f = new File(home);
             try {
@@ -78,6 +81,7 @@ public final class Bootstrap {
             }
         }
 
+        // G:如果上述方式获取不到tomcat安装目录,则判断当前tomcat是不是一般的tomcat程序,如果是则返回安装根目录
         if (homeFile == null) {
             // First fall-back. See if current directory is a bin directory
             // in a normal Tomcat install
@@ -93,6 +97,7 @@ public final class Bootstrap {
             }
         }
 
+        // G:上述都没有获取到tomcat安装目录的情况下,以user.dir目录作为tomcat工作目录
         if (homeFile == null) {
             // Second fall-back. Use current directory
             File f = new File(userDir);
@@ -108,6 +113,7 @@ public final class Bootstrap {
                 Globals.CATALINA_HOME_PROP, catalinaHomeFile.getPath());
 
         // Then base
+        // G:tomcat工作目录初始化
         String base = System.getProperty(Globals.CATALINA_BASE_PROP);
         if (base == null) {
             catalinaBaseFile = catalinaHomeFile;
@@ -253,7 +259,7 @@ public final class Bootstrap {
      * @throws Exception Fatal initialization error
      */
     public void init() throws Exception {
-
+        // G:初始化类加载器
         initClassLoaders();
 
         Thread.currentThread().setContextClassLoader(catalinaLoader);
@@ -261,12 +267,14 @@ public final class Bootstrap {
         SecurityClassLoad.securityClassLoad(catalinaLoader);
 
         // Load our startup class and call its process() method
+        // G:利用反射加载启动类--catalina
         if (log.isDebugEnabled())
             log.debug("Loading startup class");
         Class<?> startupClass = catalinaLoader.loadClass("org.apache.catalina.startup.Catalina");
         Object startupInstance = startupClass.getConstructor().newInstance();
 
         // Set the shared extensions class loader
+        // G:设置catalina的父类加载器[sharedLoader]
         if (log.isDebugEnabled())
             log.debug("Setting startup class properties");
         String methodName = "setParentClassLoader";
@@ -279,7 +287,6 @@ public final class Bootstrap {
         method.invoke(startupInstance, paramValues);
 
         catalinaDaemon = startupInstance;
-
     }
 
 
@@ -351,7 +358,6 @@ public final class Bootstrap {
 
         Method method = catalinaDaemon.getClass().getMethod("start", (Class [] )null);
         method.invoke(catalinaDaemon, (Object [])null);
-
     }
 
 

@@ -802,25 +802,29 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
      */
     @Override
     protected void initInternal() throws LifecycleException {
-
+        // G:不明白做了什么 TODO jmx相关,详细待补充
         super.initInternal();
 
         // Register global String cache
         // Note although the cache is global, if there are multiple Servers
         // present in the JVM (may happen when embedding) then the same cache
         // will be registered under multiple names
+        // G:不明白做了什么 TODO jmx相关,详细待补充
         onameStringCache = register(new StringCache(), "type=StringCache");
 
         // Register the MBeanFactory
+        // G:不明白做了什么 TODO jmx相关,详细待补充
         MBeanFactory factory = new MBeanFactory();
         factory.setContainer(this);
         onameMBeanFactory = register(factory, "type=MBeanFactory");
 
         // Register the naming resources
+        // G:不明白做了什么 TODO jmx相关,详细待补充
         globalNamingResources.init();
 
         // Populate the extension validator with JARs from common and shared
         // class loaders
+        // G:注册扩展校验器 TODO 详细待补充
         if (getCatalina() != null) {
             ClassLoader cl = getCatalina().getParentClassLoader();
             // Walk the class loader hierarchy. Stop at the system class loader.
@@ -848,6 +852,7 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
             }
         }
         // Initialize our defined Services
+        // G: 初始化service
         for (int i = 0; i < services.length; i++) {
             services[i].init();
         }
