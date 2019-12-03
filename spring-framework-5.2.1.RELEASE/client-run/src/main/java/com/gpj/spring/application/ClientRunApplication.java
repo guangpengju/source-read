@@ -1,5 +1,7 @@
 package com.gpj.spring.application;
 
+import com.gpj.spring.client.AppApplication;
+import com.gpj.spring.client.common.bean.GBean;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -11,11 +13,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  **/
 public class ClientRunApplication {
 	public static void main(String[] args) {
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-
-//		context.refresh();
-		context.getBean("");
-
-
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppApplication.class);
+		GBean bean = context.getBean(GBean.class);
+		bean.show();
 	}
 }
