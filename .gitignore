@@ -1,12 +1,6 @@
-/spring-framework-5.1.5.RELEASE/import-into-eclipse.md
-/spring-framework-5.1.5.RELEASE/import-into-idea.md
-/spring-framework-5.1.5.RELEASE/README.md
-/spring-framework-5.1.5.RELEASE/CODE_OF_CONDUCT.adoc
-/spring-framework-5.1.5.RELEASE/CONTRIBUTING.md
-/spring-framework-5.2.1.RELEASE/*.gitignore
-/spring-framework-5.2.1.RELEASE/build
-/spring-framework-5.2.1.RELEASE/client-run/out
+.idea
 .gradle
 .github
-out
 build
+out
+/*.gitignore
