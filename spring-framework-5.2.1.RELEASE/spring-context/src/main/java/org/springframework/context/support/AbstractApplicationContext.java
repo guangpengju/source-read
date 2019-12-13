@@ -724,14 +724,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * <p>Must be called before singleton instantiation.
 	 */
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
-		//TODO 待整理
-		//这个地方需要注意getBeanFactoryPostProcessors()是获取手动给spring的BeanFactoryPostProcessor
-		//自定义并不仅仅是程序员自己写的
-		//自己写的可以加companent也可以不加
-		//如果加了getBeanFactoryPostProcessors()这个地方得不得，是spring自己扫描的
-		//为什么得不到getBeanFactoryPostProcessors（）这个方法是直接获取一个list，
-		//这个list是在AnnotationConfigApplicationContext被定义
-		//所谓的自定义的就是你手动调用AnnotationConfigApplicationContext.addBeanFactoryPostProcesor();
+		//getBeanFactoryPostProcessors()获取的是手动调用addBeanFactoryPostProcessor()方法添加的BeanFactoryPostProcessor
 		PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found in the meantime
@@ -757,11 +750,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void initMessageSource() {
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
-		//查找是否包含了名为messageSource的bean，如果没有，创建一个默认的
+		//查找是否包含了名为messageSource的bean,如果没有则创建一个默认的
 		if (beanFactory.containsLocalBean(MESSAGE_SOURCE_BEAN_NAME)) {
 			this.messageSource = beanFactory.getBean(MESSAGE_SOURCE_BEAN_NAME, MessageSource.class);
 			// Make MessageSource aware of parent MessageSource.
-			//判断是否有父类且是一个分层级的messageSource，如果是将父容器的的messageSource设置到里边
+			//判断是否有父类且是一个分层级的messageSource,如果是将父容器的messageSource设置到里边
 			if (this.parent != null && this.messageSource instanceof HierarchicalMessageSource) {
 				HierarchicalMessageSource hms = (HierarchicalMessageSource) this.messageSource;
 				if (hms.getParentMessageSource() == null) {

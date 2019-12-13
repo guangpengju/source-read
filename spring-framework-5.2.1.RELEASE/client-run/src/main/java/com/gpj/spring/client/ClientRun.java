@@ -14,7 +14,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class ClientRun {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SimpleDemoConfig.class);
-
         GBean bean = context.getBean(GBean.class);
         bean.showInfo();
     }
