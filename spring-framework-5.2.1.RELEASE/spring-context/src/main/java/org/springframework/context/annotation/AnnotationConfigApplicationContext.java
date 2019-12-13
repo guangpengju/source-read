@@ -50,20 +50,53 @@ import org.springframework.util.Assert;
  * @see AnnotatedBeanDefinitionReader
  * @see ClassPathBeanDefinitionScanner
  * @see org.springframework.context.support.GenericXmlApplicationContext
+ *
+ * Spring中出来注解Bean定义的类有两个：
+ *     * AnnotationConfigApplicationContext
+ *     * AnnotationConfigWebApplicationContex
+
+ * AnnotationConfigWebApplicationContext是AnnotationConfigApplicationContext的web版本
+ * 两者的用法以及对注解的处理方式几乎没有什么差别
+ *
  */
 public class AnnotationConfigApplicationContext extends GenericApplicationContext implements AnnotationConfigRegistry {
-
+	/**
+	 * 读取器,读取一个被加了注解的bean
+	 * 构造方法中实例化
+	 */
 	private final AnnotatedBeanDefinitionReader reader;
 
+	/**
+	 * 扫描器,扫描所有加了注解的bean
+	 * 构造方法中被实例化
+	 */
 	private final ClassPathBeanDefinitionScanner scanner;
 
 
 	/**
 	 * Create a new AnnotationConfigApplicationContext that needs to be populated
 	 * through {@link #register} calls and then manually {@linkplain #refresh refreshed}.
+	 *
+	 * 调用父类GenericApplicationContext的构造方法,创建DefaultListableBeanFactory实例
+	 * 初始化一个bean的读取和扫描器
 	 */
 	public AnnotationConfigApplicationContext() {
+		/**
+		 * 调用父类GenericApplicationContext的构造方法,创建DefaultListableBeanFactory实例
+		 * 次行代码G自己加的
+		 */
+		super();
+
+		/**
+		 * 读取器,去读取加注解的bean转为一个bean-definition
+		 */
 		this.reader = new AnnotatedBeanDefinitionReader(this);
+
+		/**
+		 * 扫描出某路径下的加注解的bean
+		 * 实际上扫描包工作不是scanner完成的,该scanner仅供用户扫描注解bean使用
+		 * spring内部会另外创建一个ClassPathBeanDefinitionScanner实例,作为spring内部扫描器
+		 */
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
 
@@ -153,6 +186,12 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * {@link Configuration @Configuration} classes
 	 * @see #scan(String...)
 	 * @see #refresh()
+	 *
+	 *
+	 * 向spring容器注册单独的bean
+	 *   * 可以注册一个配置类
+	 * 	 * 可以注册一个bean
+	 * 注册后需要手动调用refresh方法去触发容器解析注解
 	 */
 	@Override
 	public void register(Class<?>... componentClasses) {
